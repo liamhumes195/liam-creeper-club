@@ -1,0 +1,1 @@
+{"name":"liam-creeper-club","version":"1.0.0","description":"Creeper Club website with Pong game","main":"server.js","scripts":{"start":"node server.js","start:local25575":"cross-env SERVER_HOST=localhost PORT=25575 node server.js"},"dependencies":{"express":"^4.18.2"},"devDependencies":{"cross-env":"^7.0.3"}}

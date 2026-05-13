@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creeper Club</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2ecc40;
+            --dark: #222;
+            --light: #fff;
+            --accent: #ffdc00;
+        }
+        body {
+            margin: 0;
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: linear-gradient(135deg, #232526 0%, #2ecc40 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        header {
+            background: var(--dark);
+            padding: 2rem 0 1rem 0;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            letter-spacing: 2px;
+            color: var(--primary);
+            text-shadow: 0 2px 8px #0008;
+        }
+        nav {
+            margin-top: 1rem;
+        }
+        nav a {
+            color: var(--accent);
+            text-decoration: none;
+            margin: 0 1.5rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: var(--primary);
+        }
+        .container {
+            width: min(900px, calc(100% - 2rem));
+            max-width: 900px;
+            margin: 2rem auto;
+            background: rgba(34,34,34,0.95);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px #0006;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+        .hero {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .hero h2 {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: #eee;
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        .feature {
+            background: #222c;
+            border-radius: 12px;
+            padding: 1.5rem;
+            flex: 1 1 220px;
+            min-width: 220px;
+            max-width: 280px;
+            text-align: center;
+            box-shadow: 0 2px 8px #0004;
+        }
+        .feature h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .feature p {
+            color: #ccc;
+            font-size: 1rem;
+        }
+        .join-section {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .join-section h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .join-section form {
+            display: inline-block;
+            background: #222c;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px #0004;
+        }
+        .join-section input, .join-section button {
+            font-size: 1rem;
+            padding: 0.7rem 1rem;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+        }
+        .join-section input {
+            width: 220px;
+            margin-right: 1rem;
+        }
+        .join-section button {
+            background: var(--primary);
+            color: var(--dark);
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .join-section button:hover {
+            background: var(--accent);
+            color: var(--dark);
+        }
+        .drive-section {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .drive-section h2 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .drive-card {
+            background: #222c;
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: 0 2px 8px #0004;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .drive-note {
+            margin-top: 0.8rem;
+            color: #d3d3d3;
+            font-size: 0.95rem;
+        }
+        .drive-link {
+            display: inline-block;
+            margin-top: 0.9rem;
+            padding: 0.65rem 1.1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            background: var(--primary);
+            color: #111;
+            transition: background 0.2s;
+        }
+        .drive-link:hover {
+            background: var(--accent);
+            color: #111;
+        }
+        footer {
+            text-align: center;
+            padding: 1.5rem 0;
+            background: #181818;
+            color: #aaa;
+            font-size: 1rem;
+            margin-top: 3rem;
+            border-radius: 0 0 16px 16px;
+        }
+        @media (max-width: 700px) {
+            .features {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .container {
+                padding: 1rem;
+            }
+        }
+
+        /* --- Pong Game Styles --- */
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        canvas {
+            background-color: #000;
+            border: 4px solid #E0E0E0;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            cursor: default;
+            touch-action: none;
+            display: block;
+            box-sizing: border-box;
+            max-width: 100%;
+            height: auto;
+        }
+        
+        #game-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            z-index: 10;
+            width: 80%;
+            max-width: 400px;
+        }
+        #start-button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            color: #121212;
+            background-color: #E0E0E0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #A0A0A0;
+            transition: all 0.1s ease;
+        }
+        #start-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #A0A0A0;
+        }
+        #controls {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        .creeper-frogger {
+            margin-top: 2rem;
+            text-align: center;
+            background: #222c;
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: 0 2px 8px #0004;
+        }
+        .creeper-frogger h3 {
+            color: var(--accent);
+            margin: 0 0 0.8rem 0;
+        }
+        .creeper-frogger-wrap {
+            position: relative;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        #creeper-frogger-canvas {
+            border: 4px solid #7bdc5f;
+            box-shadow: 0 0 18px rgba(46, 204, 64, 0.35);
+            border-radius: 8px;
+        }
+        #frogger-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.78);
+            border-radius: 10px;
+            padding: 16px;
+            width: 80%;
+            max-width: 420px;
+            z-index: 10;
+        }
+        #frogger-button {
+            margin-top: 12px;
+            padding: 10px 18px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9rem;
+            color: #121212;
+            background-color: #E0E0E0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #A0A0A0;
+        }
+        .frogger-help {
+            margin: 0.4rem 0 0 0;
+            color: #ccc;
+            font-size: 0.95rem;
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XZ4VYWWDFD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-XZ4VYWWDFD');
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Creeper Club</h1>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#news">News</a>
+            <a href="#events">Events</a>
+            <a href="#game-section">Game</a>
+            <a href="#drive">Drive</a>
+            <a href="#join">Join</a>
+        </nav>
+    </header>
+    <div class="container">
+        <section class="hero" id="about">
+            <h2>Welcome to the Creeper Club!</h2>
+            <p>
+                A vibrant community for coders, gamers, and creators. Share your passion, learn new skills, and make friends!
+            </p>
+
+            <!-- Added Minecraft Trailer -->
+            <div style="margin-top: 20px;">
+              <h3 style="color: var(--accent);">Watch the Minecraft Trailer</h3>
+              <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+                <iframe src="https://www.youtube.com/embed/MmB9b5njVbA" 
+                  title="Minecraft Official Trailer"
+                  style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+
+            <div style="margin-top: 20px;">
+              <h3 style="color: var(--primary);">Now Playing: Fly Away</h3>
+              <audio controls preload="metadata" style="width: 100%; max-width: 520px;">
+                <source src="fly-away.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+        </section>
+
+        <section class="news" id="news">
+            <h2 style="text-align:center; color: var(--accent); margin-bottom: 1.5rem;">Latest News</h2>
+            <div style="background: #222c; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; border-left: 4px solid var(--primary);">
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Liam Recovered His Old PC!</h3>
+                <p style="color: #ccc; margin-bottom: 0.5rem;">Great news everyone! Liam has successfully recovered his old PC on 3/5/2026. This means we'll have more resources for our upcoming projects and events!</p>
+                <p style="color: #aaa; font-size: 0.9rem; font-style: italic;">Posted on March 5, 2026</p>
+            </div>
+            <div style="background: #222c; border-radius: 12px; padding: 1.2rem; margin-bottom: 1rem; border-left: 4px solid var(--accent);">
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Shoutout: Support My Friend</h3>
+                <p style="color:#ccc; margin-bottom:0.5rem;">If you enjoy the content, go sub to my friend's channel: <strong>Cote_Vr</strong></p>
+                <a href="https://www.youtube.com/@Cote_Vr" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:6px;padding:0.6rem 1rem;border-radius:8px;background:var(--primary);color:#111;font-weight:700;text-decoration:none;">Sub here</a>
+            </div>
+            <p style="text-align:center; color: #ddd; margin-top: 0.8rem; font-style: italic;">
+                From the Creeper Club staff: more news and games are coming soon.
+            </p>
+        </section>
+
+        <section class="features" id="events">
+            <div class="feature">
+                <h3>Weekly Events</h3>
+                <p>Check out our past coding jams, gaming nights, and creative workshops - see what we've accomplished together!</p>
+            </div>
+            <div class="feature">
+                <h3>Friendly Community</h3>
+                <p>Meet awesome people, collaborate on projects, and have fun together.</p>
+            </div>
+            <div class="feature">
+                <h3>Resources & Support</h3>
+                <p>Access exclusive tutorials, guides, and get help from experienced members.</p>
+            </div>
+        </section>
+        
+        <section id="game-section">
+            <h2 style="text-align:center; color: var(--primary);">Play Creeper Pong!</h2>
+            <div class="game-container">
+                <canvas id="gameCanvas"></canvas>
+                <div id="game-message">
+                    <p>Use the W and S keys to move your paddle.</p>
+                    <p>Score 10 points to win!</p>
+                    <button id="start-button">Start Game</button>
+                </div>
+                <p id="controls">W/S or Up/Down Arrow Keys to move paddle</p>
+            </div>
+            <div class="creeper-frogger">
+                <h3>Play Creeper Crossing!</h3>
+                <div class="creeper-frogger-wrap">
+                    <canvas id="creeper-frogger-canvas"></canvas>
+                    <div id="frogger-message">
+                        <p>Use arrow keys or WASD to move your creeper.</p>
+                        <p>Cross roads and rivers 5 times to win.</p>
+                        <button id="frogger-button">Start Crossing</button>
+                    </div>
+                </div>
+                <p class="frogger-help">Avoid cars, ride logs, and reach the top safely.</p>
+            </div>
+        </section>
+
+        <section class="drive-section" id="drive">
+            <h2>Creeper Club Public Drive Folder</h2>
+            <div class="drive-card">
+                <p class="drive-note">Open our public folder for downloads, updates, and shared files.</p>
+            <a
+                class="drive-link"
+                href="https://drive.google.com/drive/folders/1lPJRNkgBo9OXtMW1H4cj3ZTCSv2K-NAG?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer">Open Folder in Google Drive</a>
+            </div>
+        </section>
+
+        <section id="youtube" style="margin-top:2rem;text-align:center;">
+            <h2 style="color: var(--accent);">Watch &amp; Subscribe on YouTube</h2>
+            <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;align-items:center;">
+              <div style="flex: 0 0 auto;">
+                <a href="https://www.youtube.com/@Cote_Vr" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:0.6rem 1rem;border-radius:8px;background:var(--primary);color:#111;font-weight:800;text-decoration:none;box-shadow:0 4px 0 rgba(0,0,0,0.2);">Subscribe</a>
+              </div>
+              <div style="max-width:560px;flex:1 1 320px;min-width:260px;">
+                <p style="color:#ddd;margin-bottom:8px;">Channel: <a href="https://www.youtube.com/@Cote_Vr" target="_blank" rel="noopener noreferrer" style="color:var(--primary);text-decoration:underline;">https://www.youtube.com/@Cote_Vr</a></p>
+                <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.45);">
+                  <iframe src="https://www.youtube.com/embed/9VIFvcbjrRc" title="Cote_Vr Featured Video" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+                </div>
+                <p style="color:#ccc;font-size:0.9rem;margin-top:8px;">Now featuring Cote_Vr — enjoy the video and <a href="https://www.youtube.com/@Cote_Vr" target="_blank" rel="noopener noreferrer" style="color:var(--primary);text-decoration:underline;">sub here</a>!</p>
+              </div>
+            </div>
+        </section>
+
+        <section class="join-section" id="join">
+            <h2>Become a Member</h2>
+            <form action="https://formspree.io/f/mrbadbje" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Email Address" required>
+                <button type="submit">Join Now</button>
+            </form>
+        </section>
+    </div>
+    <footer>
+        &copy; 2026 Creeper Club. All rights reserved.
+    </footer>
+
+    <script>
+      const canvas = document.getElementById('gameCanvas');
+      const ctx = canvas.getContext('2d');
+      const gameMessage = document.getElementById('game-message');
+      const startButton = document.getElementById('start-button');
+      
+      canvas.width = 800;
+      canvas.height = 400;
+      
+      let gameRunning = false;
+      let playerScore = 0;
+      let computerScore = 0;
+      
+      const paddleWidth = 15;
+      const paddleHeight = 80;
+      const ballSize = 10;
+      
+      const player = {
+        x: 30,
+        y: canvas.height / 2 - paddleHeight / 2,
+        width: paddleWidth,
+        height: paddleHeight,
+        dy: 0,
+        speed: 6
+      };
+      
+      const computer = {
+        x: canvas.width - 30 - paddleWidth,
+        y: canvas.height / 2 - paddleHeight / 2,
+        width: paddleWidth,
+        height: paddleHeight,
+        dy: 0,
+        speed: 4
+      };
+      
+      const ball = {
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        size: ballSize,
+        dx: 4,
+        dy: 3
+      };
+      
+      const keys = {};
+      
+      document.addEventListener('keydown', (e) => {
+        keys[e.key] = true;
+      });
+      
+      document.addEventListener('keyup', (e) => {
+        keys[e.key] = false;
+      });
+      
+      startButton.addEventListener('click', startGame);
+      
+      function startGame() {
+        gameRunning = true;
+        playerScore = 0;
+        computerScore = 0;
+        resetBall();
+        gameMessage.style.display = 'none';
+        gameLoop();
+      }
+      
+      function resetBall() {
+        ball.x = canvas.width / 2;
+        ball.y = canvas.height / 2;
+        ball.dx = (Math.random() > 0.5 ? 1 : -1) * 4;
+        ball.dy = (Math.random() - 0.5) * 6;
+      }
+      
+      function updatePaddles() {
+        if (keys['w'] || keys['W'] || keys['ArrowUp']) {
+          player.y = Math.max(0, player.y - player.speed);
+        }
+        if (keys['s'] || keys['S'] || keys['ArrowDown']) {
+          player.y = Math.min(canvas.height - player.height, player.y + player.speed);
+        }
+        
+        const computerCenter = computer.y + computer.height / 2;
+        if (ball.y < computerCenter - 20) {
+          computer.y = Math.max(0, computer.y - computer.speed);
+        } else if (ball.y > computerCenter + 20) {
+          computer.y = Math.min(canvas.height - computer.height, computer.y + computer.speed);
+        }
+      }
+      
+      function updateBall() {
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+        
+        if (ball.y <= ball.size || ball.y >= canvas.height - ball.size) {
+          ball.dy = -ball.dy;
+        }
+        
+        if (ball.x <= player.x + player.width && 
+            ball.x >= player.x && 
+            ball.y >= player.y && 
+            ball.y <= player.y + player.height) {
+          ball.dx = Math.abs(ball.dx);
+          ball.dy += (Math.random() - 0.5) * 2;
+        }
+        
+        if (ball.x >= computer.x && 
+            ball.x <= computer.x + computer.width && 
+            ball.y >= computer.y && 
+            ball.y <= computer.y + computer.height) {
+          ball.dx = -Math.abs(ball.dx);
+          ball.dy += (Math.random() - 0.5) * 2;
+        }
+        
+        if (ball.x < 0) {
+          computerScore++;
+          resetBall();
+        }
+        if (ball.x > canvas.width) {
+          playerScore++;
+          resetBall();
+        }
+        
+        if (playerScore >= 10 || computerScore >= 10) {
+          endGame();
+        }
+      }
+      
+      function draw() {
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.strokeStyle = '#fff';
+        ctx.setLineDash([10, 10]);
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, 0);
+        ctx.lineTo(canvas.width / 2, canvas.height);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        ctx.fillStyle = '#2ecc40';
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+        ctx.fillRect(computer.x, computer.y, computer.width, computer.height);
+        
+        ctx.fillStyle = '#ffdc00';
+        ctx.fillRect(ball.x - ball.size/2, ball.y - ball.size/2, ball.size, ball.size);
+        
+        ctx.fillStyle = '#fff';
+        ctx.font = '48px Press Start 2P';
+        ctx.fillText(playerScore, canvas.width / 4, 60);
+        ctx.fillText(computerScore, 3 * canvas.width / 4 - 50, 60);
+      }
+      
+      function endGame() {
+        gameRunning = false;
+        const winner = playerScore >= 10 ? 'You Win!' : 'Computer Wins!';
+        gameMessage.innerHTML = `
+          <h2>${winner}</h2>
+          <p>Final Score: ${playerScore} - ${computerScore}</p>
+          <button id="start-button">Play Again</button>
+        `;
+        gameMessage.style.display = 'block';
+        
+        document.getElementById('start-button').addEventListener('click', startGame);
+      }
+      
+      function gameLoop() {
+        if (!gameRunning) return;
+        
+        updatePaddles();
+        updateBall();
+        draw();
+        
+        requestAnimationFrame(gameLoop);
+      }
+      
+      draw();
+
+      const froggerCanvas = document.getElementById('creeper-frogger-canvas');
+      const froggerCtx = froggerCanvas.getContext('2d');
+      const froggerMessage = document.getElementById('frogger-message');
+      const froggerButton = document.getElementById('frogger-button');
+
+      const cellSize = 40;
+      const froggerCols = 20;
+      const froggerRows = 12;
+      froggerCanvas.width = cellSize * froggerCols;
+      froggerCanvas.height = cellSize * froggerRows;
+
+      const safeRows = [0, 5, 11];
+      const waterRows = [1, 2, 3, 4];
+      const roadRows = [6, 7, 8, 9, 10];
+
+      let froggerRunning = false;
+      let froggerWins = 0;
+      let froggerLives = 3;
+      let froggerLastTime = 0;
+
+      const creeper = {
+        x: Math.floor(froggerCols / 2) * cellSize,
+        y: (froggerRows - 1) * cellSize,
+        size: 30
+      };
+
+      const lanes = {
+        road: [
+          { row: 6, speed: 1.8, width: 70, gap: 180, color: '#ff595e', offset: 20 },
+          { row: 7, speed: -2.1, width: 90, gap: 210, color: '#ffca3a', offset: 120 },
+          { row: 8, speed: 1.6, width: 100, gap: 240, color: '#8ac926', offset: 40 },
+          { row: 9, speed: -2.2, width: 80, gap: 200, color: '#1982c4', offset: 160 },
+          { row: 10, speed: 1.5, width: 110, gap: 250, color: '#ff924c', offset: 70 }
+        ],
+        water: [
+          { row: 1, speed: -0.9, width: 130, gap: 240, color: '#8b5a2b', offset: 40 },
+          { row: 2, speed: 1.1, width: 160, gap: 280, color: '#996633', offset: 160 },
+          { row: 3, speed: -1.3, width: 120, gap: 220, color: '#7f5539', offset: 100 },
+          { row: 4, speed: 0.8, width: 150, gap: 260, color: '#a47148', offset: 220 }
+        ]
+      };
+
+      function buildLaneObjects(laneConfig) {
+        const objects = [];
+        laneConfig.forEach((lane) => {
+          const laneObjects = [];
+          for (let x = lane.offset; x < froggerCanvas.width + lane.gap; x += lane.gap) {
+            laneObjects.push({ x, y: lane.row * cellSize, width: lane.width, height: cellSize });
+          }
+          objects.push({ ...lane, objects: laneObjects });
+        });
+        return objects;
+      }
+
+      let roadLanes = buildLaneObjects(lanes.road);
+      let waterLanes = buildLaneObjects(lanes.water);
+
+      function resetCreeperPosition() {
+        creeper.x = Math.floor(froggerCols / 2) * cellSize;
+        creeper.y = (froggerRows - 1) * cellSize;
+      }
+
+      function resetFroggerGame() {
+        froggerLives = 3;
+        roadLanes = buildLaneObjects(lanes.road);
+        waterLanes = buildLaneObjects(lanes.water);
+        resetCreeperPosition();
+      }
+
+      function froggerStart() {
+        resetFroggerGame();
+        froggerRunning = true;
+        froggerMessage.style.display = 'none';
+        froggerLastTime = 0;
+        requestAnimationFrame(froggerLoop);
+      }
+
+      froggerButton.addEventListener('click', froggerStart);
+
+      document.addEventListener('keydown', (e) => {
+        if (!froggerRunning) return;
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'W', 'a', 'A', 's', 'S', 'd', 'D'].includes(e.key)) {
+          e.preventDefault();
+        }
+
+        if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') moveCreeper(0, -1);
+        if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') moveCreeper(0, 1);
+        if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') moveCreeper(-1, 0);
+        if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') moveCreeper(1, 0);
+      });
+
+      function moveCreeper(dx, dy) {
+        const newX = creeper.x + dx * cellSize;
+        const newY = creeper.y + dy * cellSize;
+
+        creeper.x = Math.max(0, Math.min(froggerCanvas.width - cellSize, newX));
+        creeper.y = Math.max(0, Math.min((froggerRows - 1) * cellSize, newY));
+      }
+
+      function updateLaneMovement(laneArray, deltaMultiplier) {
+        laneArray.forEach((lane) => {
+          lane.objects.forEach((obj) => {
+            obj.x += lane.speed * deltaMultiplier;
+
+            if (lane.speed > 0 && obj.x > froggerCanvas.width + lane.width) {
+              obj.x = -lane.width;
+            }
+            if (lane.speed < 0 && obj.x < -lane.width) {
+              obj.x = froggerCanvas.width + lane.width;
+            }
+          });
+        });
+      }
+
+      function overlaps(a, b) {
+        return (
+          a.x < b.x + b.width &&
+          a.x + a.width > b.x &&
+          a.y < b.y + b.height &&
+          a.y + a.height > b.y
+        );
+      }
+
+      function creeperRect() {
+        const padding = (cellSize - creeper.size) / 2;
+        return {
+          x: creeper.x + padding,
+          y: creeper.y + padding,
+          width: creeper.size,
+          height: creeper.size
+        };
+      }
+
+      function loseLife() {
+        froggerLives -= 1;
+        resetCreeperPosition();
+
+        if (froggerLives <= 0) {
+          endFroggerGame('Game Over! Cars and water got you.');
+        }
+      }
+
+      function endFroggerGame(messageText) {
+        froggerRunning = false;
+        froggerMessage.innerHTML = `
+          <p>${messageText}</p>
+          <p>Wins: ${froggerWins} | Lives left: ${Math.max(froggerLives, 0)}</p>
+          <button id="frogger-button">Play Again</button>
+        `;
+        froggerMessage.style.display = 'block';
+        document.getElementById('frogger-button').addEventListener('click', froggerStart);
+      }
+
+      function updateFrogger(deltaMultiplier) {
+        updateLaneMovement(roadLanes, deltaMultiplier);
+        updateLaneMovement(waterLanes, deltaMultiplier);
+
+        const rect = creeperRect();
+        const currentRow = Math.floor(creeper.y / cellSize);
+
+        if (roadRows.includes(currentRow)) {
+          for (const lane of roadLanes) {
+            if (lane.row !== currentRow) continue;
+            for (const car of lane.objects) {
+              if (overlaps(rect, car)) {
+                loseLife();
+                return;
+              }
+            }
+          }
+        }
+
+        if (waterRows.includes(currentRow)) {
+          let onLog = false;
+          for (const lane of waterLanes) {
+            if (lane.row !== currentRow) continue;
+            for (const log of lane.objects) {
+              if (overlaps(rect, log)) {
+                onLog = true;
+                creeper.x += lane.speed * deltaMultiplier;
+                break;
+              }
+            }
+            if (onLog) break;
+          }
+
+          if (!onLog) {
+            loseLife();
+            return;
+          }
+
+          if (creeper.x < 0 || creeper.x > froggerCanvas.width - cellSize) {
+            loseLife();
+            return;
+          }
+        }
+
+        if (safeRows.includes(currentRow) && currentRow === 0) {
+          froggerWins += 1;
+          resetCreeperPosition();
+          if (froggerWins >= 5) {
+            endFroggerGame('You Win! Creeper crossed 5 times!');
+          }
+        }
+      }
+
+      function drawLaneRows() {
+        for (let row = 0; row < froggerRows; row += 1) {
+          let color = '#2f8f2f';
+          if (waterRows.includes(row)) color = '#1b4d6d';
+          if (roadRows.includes(row)) color = '#3a3a3a';
+          if (row === 0) color = '#4caf50';
+          if (row === 11) color = '#4caf50';
+          if (row === 5) color = '#5a9b5a';
+
+          froggerCtx.fillStyle = color;
+          froggerCtx.fillRect(0, row * cellSize, froggerCanvas.width, cellSize);
+        }
+      }
+
+      function drawRoadAndLogs() {
+        roadLanes.forEach((lane) => {
+          froggerCtx.fillStyle = lane.color;
+          lane.objects.forEach((car) => {
+            froggerCtx.fillRect(car.x, car.y + 6, car.width, cellSize - 12);
+          });
+        });
+
+        waterLanes.forEach((lane) => {
+          froggerCtx.fillStyle = lane.color;
+          lane.objects.forEach((log) => {
+            froggerCtx.fillRect(log.x, log.y + 10, log.width, cellSize - 20);
+          });
+        });
+      }
+
+      function drawCreeper() {
+        const padding = (cellSize - creeper.size) / 2;
+        const x = creeper.x + padding;
+        const y = creeper.y + padding;
+
+        froggerCtx.fillStyle = '#2ecc40';
+        froggerCtx.fillRect(x, y, creeper.size, creeper.size);
+
+        froggerCtx.fillStyle = '#173d1c';
+        froggerCtx.fillRect(x + 6, y + 7, 5, 5);
+        froggerCtx.fillRect(x + 19, y + 7, 5, 5);
+        froggerCtx.fillRect(x + 11, y + 13, 8, 6);
+        froggerCtx.fillRect(x + 9, y + 19, 4, 7);
+        froggerCtx.fillRect(x + 17, y + 19, 4, 7);
+      }
+
+      function drawFroggerHud() {
+        froggerCtx.fillStyle = '#ffffff';
+        froggerCtx.font = '18px Montserrat';
+        froggerCtx.fillText(`Wins: ${froggerWins}/5`, 12, 24);
+        froggerCtx.fillText(`Lives: ${froggerLives}`, 140, 24);
+      }
+
+      function drawFrogger() {
+        drawLaneRows();
+        drawRoadAndLogs();
+        drawCreeper();
+        drawFroggerHud();
+      }
+
+      function froggerLoop(timestamp) {
+        if (!froggerRunning) return;
+
+        if (!froggerLastTime) froggerLastTime = timestamp;
+        const delta = Math.min(2, (timestamp - froggerLastTime) / 16.67);
+        froggerLastTime = timestamp;
+
+        updateFrogger(delta);
+        drawFrogger();
+        requestAnimationFrame(froggerLoop);
+      }
+
+      drawFrogger();
+    </script>
+</body>
+</html>
