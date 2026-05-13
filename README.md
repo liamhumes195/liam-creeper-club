@@ -35,3 +35,7 @@ The server will run on `http://localhost:3000`
 ## License
 
 © 2026 Creeper Club. All rights reserved.
+
+## Deployed on Railway
+
+Visit the live site to play the games!
