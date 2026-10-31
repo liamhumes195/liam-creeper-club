@@ -11,6 +11,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'creeper-code.html'));
 });
 
+app.get('/videos', (req, res) => {
+    res.redirect('/videos.html');
+});
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
