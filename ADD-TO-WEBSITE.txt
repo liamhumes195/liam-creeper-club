@@ -1,0 +1,72 @@
+ADD McCREEPER BROWSER TO YOUR WEBSITE
+
+Included: download.html - a complete download page, with an install guide.
+This page links to the published v2.1.0 installer on GitHub Releases.
+The installer itself stays on GitHub; you only upload the small HTML file.
+
+1. PREVIEW IT
+Double-click download.html on your computer to open it in your browser.
+The Home link is designed for your deployed website; it may not work
+when previewing a file from your computer.
+
+2. ADD THE FILE TO YOUR WEBSITE
+Put download.html in the folder your website actually serves.
+- A plain static website: place it beside your served index.html.
+- Express with app.use(express.static('public')): put it in public/.
+- Another static folder: use that folder instead.
+Do not replace your existing homepage with this file.
+
+If you edit your site through GitHub:
+Open your website's repository and its served folder.
+Choose Add file > Upload files, select download.html, and commit it.
+If your host automatically deploys commits, wait for deployment to finish.
+Otherwise deploy using your host's normal process.
+
+3. LINK IT FROM YOUR HOMEPAGE
+Add this next to your other navigation links:
+
+<a href="/download.html">Browser</a>
+
+Or add this ready-made direct download button:
+
+<a href="https://github.com/liamhumes195/mccreeper-browser/releases/download/v2.1.0/McCreeperBrowser-Setup.exe"
+   style="display:inline-block;background:#79ee98;color:#0a2412;padding:13px 23px;border-radius:12px;font-weight:700;text-decoration:none;">
+  Download McCreeper Browser for Windows
+</a>
+
+The direct link starts the GitHub download. The download.html page
+also explains installation, site profiles, and the unsigned-app warning.
+
+4. CHECK THE LIVE PAGE
+After deployment, open:
+https://mccreeper.lol/download.html
+
+This is the intended address after you upload it, not a claim it is
+already published. If you see 404, confirm the file is in your served
+folder and the host has deployed your commit.
+
+If your Express site does not serve a public/static folder, add a route
+before any catch-all route. For a CommonJS server with download.html
+next to the server file, for example:
+
+const path = require('node:path');
+app.get('/download.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'download.html'));
+});
+
+Reuse an existing path import if your server already has one. Adjust
+that file location for your actual project. Commit and redeploy the site.
+
+5. FUTURE RELEASES
+The page intentionally points to v2.1.0 so its version, file size, and
+checksum agree. When releasing a newer installer, update those values
+and both download/release links in download.html together.
+
+CURRENT DOWNLOAD
+https://github.com/liamhumes195/mccreeper-browser/releases/download/v2.1.0/McCreeperBrowser-Setup.exe
+
+CURRENT RELEASE PAGE
+https://github.com/liamhumes195/mccreeper-browser/releases/tag/v2.1.0
+
+No API keys, OAuth JSON, passwords, or installer files are needed to
+host this HTML page. The page uses no scripts, trackers, or external fonts.
